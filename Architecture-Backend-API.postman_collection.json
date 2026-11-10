@@ -1,0 +1,1280 @@
+  {
+  "info": {
+    "name": "Architecture Backend API",
+    "description": "Complete API collection for Projects, Services, Team, Contact and Auth",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"your_admin_password\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "auth", "login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.environment.set(\"jwt_token\", pm.response.json().token);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Client Reviews",
+      "item": [
+        {
+          "name": "Create Client Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "clientImage",
+                  "type": "file",
+                  "src": [],
+                  "description": "Client image file (jpeg, jpg, png, gif, webp) - optional"
+                },
+                {
+                  "key": "name",
+                  "value": "John Doe",
+                  "type": "text",
+                  "description": "Client name (required, 2-100 characters)"
+                },
+                {
+                  "key": "role",
+                  "value": "CEO, Tech Company",
+                  "type": "text",
+                  "description": "Client role/designation (required, 2-200 characters)"
+                },
+                {
+                  "key": "feedback",
+                  "value": "Excellent service and great support team. Highly recommended!",
+                  "type": "text",
+                  "description": "Review feedback (required, 10-1000 characters)"
+                },
+                {
+                  "key": "rating",
+                  "value": "4.5",
+                  "type": "text",
+                  "description": "Rating (required, 0-5, floating point allowed, e.g., 4.5)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/client-reviews",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "client-reviews"]
+            },
+            "description": "Create a new client review with optional image upload. Image will be uploaded to Cloudinary and URL stored in database."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Client Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/client-reviews",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "client-reviews"]
+            },
+            "description": "Get all client reviews"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Client Review by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/client-reviews/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "client-reviews", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Client Review ID"
+                }
+              ]
+            },
+            "description": "Get a single client review by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Client Review",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "clientImage",
+                  "type": "file",
+                  "src": [],
+                  "description": "Client image file (optional - only if you want to update)"
+                },
+                {
+                  "key": "name",
+                  "value": "Updated Name",
+                  "type": "text",
+                  "description": "Client name (optional)"
+                },
+                {
+                  "key": "role",
+                  "value": "Updated Designation",
+                  "type": "text",
+                  "description": "Client role/designation (optional)"
+                },
+                {
+                  "key": "feedback",
+                  "value": "Updated review description",
+                  "type": "text",
+                  "description": "Review feedback (optional)"
+                },
+                {
+                  "key": "rating",
+                  "value": "4.8",
+                  "type": "text",
+                  "description": "Rating (optional, 0-5, floating point allowed)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/client-reviews/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "client-reviews", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Client Review ID to update"
+                }
+              ]
+            },
+            "description": "Update an existing client review. Image optional."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Client Review",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/client-reviews/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "client-reviews", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Client Review ID to delete"
+                }
+              ]
+            },
+            "description": "Delete a client review by ID"
+          },
+          "response": []
+        }
+      ],
+      "description": "APIs for client reviews (testimonials)"
+    },
+    {      "name": "Gallery",
+      "item": [
+        {
+          "name": "Create Gallery Item",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [],
+                  "description": "Main gallery image (jpeg, jpg, png, gif, webp)"
+                },
+                {
+                  "key": "title",
+                  "value": "Bathroom Bliss",
+                  "type": "text",
+                  "description": "Gallery item title (required)"
+                },
+                {
+                  "key": "category",
+                  "value": "Bathroom",
+                  "type": "text",
+                  "description": "Category (e.g., Bathroom, Living Room, Bedroom)"
+                },
+                {
+                  "key": "description",
+                  "value": "Beautiful bathroom design",
+                  "type": "text",
+                  "description": "Description (optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/gallery",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "gallery"]
+            },
+            "description": "Create a new gallery item with image upload"
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Gallery Items",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/gallery",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "gallery"]
+            },
+            "description": "Get all gallery items"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gallery Item by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/gallery/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "gallery", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Gallery Item ID"
+                }
+              ]
+            },
+            "description": "Get a single gallery item by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Gallery Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [],
+                  "description": "Updated image (optional)"
+                },
+                {
+                  "key": "title",
+                  "value": "Updated Title",
+                  "type": "text",
+                  "description": "Title (optional)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/gallery/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "gallery", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Gallery Item ID"
+                }
+              ]
+            },
+            "description": "Update a gallery item"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Gallery Item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/gallery/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "gallery", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Gallery Item ID"
+                }
+              ]
+            },
+            "description": "Delete a gallery item"
+          },
+          "response": []
+        }
+      ],
+      "description": "APIs for gallery images management"
+    },
+    {
+      "name": "Company Owner Quote",
+      "item": [
+        {
+          "name": "Create/Update Company Owner",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": [],
+                  "description": "Owner image (optional)"
+                },
+                {
+                  "key": "logo",
+                  "type": "file",
+                  "src": [],
+                  "description": "Company logo (optional)"
+                },
+                {
+                  "key": "name",
+                  "value": "Morgan Dufresne",
+                  "type": "text",
+                  "description": "Owner name (required)"
+                },
+                {
+                  "key": "role",
+                  "value": "Company Owner",
+                  "type": "text",
+                  "description": "Owner role (optional)"
+                },
+                {
+                  "key": "quote",
+                  "value": "I absolutely love the design! Highly recommended!",
+                  "type": "text",
+                  "description": "Quote/testimonial (required)"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/company-owner",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "company-owner"]
+            },
+            "description": "Create or update company owner quote information"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Company Owner",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/company-owner",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "company-owner"]
+            },
+            "description": "Get company owner quote information"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Company Owner",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/company-owner",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "company-owner"]
+            },
+            "description": "Delete company owner information"
+          },
+          "response": []
+        }
+      ],
+      "description": "APIs for company owner quote section"
+    },
+    {      "name": "Projects",
+      "item": [
+        {
+          "name": "Get All Projects",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/projects",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "projects"]
+            },
+            "description": "Fetch all projects"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Project by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/projects/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "projects", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Project ID"
+                }
+              ]
+            },
+            "description": "Fetch a single project by ID (use manual :id placeholder)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Project (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Modern Luxury Residence",
+                  "type": "text"
+                },
+                {
+                  "key": "slug",
+                  "value": "modern-luxury-residence",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "Dubai, UAE",
+                  "type": "text"
+                },
+                {
+                  "key": "year",
+                  "value": "2025",
+                  "type": "text"
+                },
+                {
+                  "key": "architect",
+                  "value": "Design Studio XYZ",
+                  "type": "text"
+                },
+                {
+                  "key": "projectType",
+                  "value": "Residential",
+                  "type": "text"
+                },
+                {
+                  "key": "client",
+                  "value": "John Doe",
+                  "type": "text"
+                },
+                {
+                  "key": "terms",
+                  "value": "6 Month",
+                  "type": "text"
+                },
+                {
+                  "key": "date",
+                  "value": "01/15/2025",
+                  "type": "text"
+                },
+                {
+                  "key": "resultDescription",
+                  "value": "A stunning modern residential project combining luxury with sustainability",
+                  "type": "text"
+                },
+                {
+                  "key": "details",
+                  "value": "[\"Feature 1: Modern design\",\"Feature 2: Eco-friendly\"]",
+                  "type": "text"
+                },
+                {
+                  "key": "roomSizes",
+                  "value": "[{\"size\":\"50M2\",\"label\":\"Living Room\"},{\"size\":\"30M2\",\"label\":\"Master Bedroom\"}]",
+                  "type": "text"
+                },
+                {
+                  "key": "strategy",
+                  "value": "",
+                  "type": "text",
+                  "description": "Project strategy (optional)"
+                },
+                {
+                  "key": "videos",
+                  "type": "file",
+                  "src": [],
+                  "description": "Upload one or more video files (mp4, mov, etc.)"
+                },
+                {
+                  "key": "mainImage",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "photos",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/projects",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "projects"]
+            },
+            "description": "Create a new project (requires valid JWT token with admin role)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Project (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Updated Project Title",
+                  "type": "text"
+                },
+                {
+                  "key": "location",
+                  "value": "New Location",
+                  "type": "text"
+                },
+                {
+                  "key": "strategy",
+                  "value": "",
+                  "type": "text",
+                  "description": "Project strategy (optional)"
+                },
+                {
+                  "key": "videos",
+                  "type": "file",
+                  "src": [],
+                  "description": "Upload one or more video files (mp4, mov, etc.)"
+                },
+                {
+                  "key": "mainImage",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/projects/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "projects", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Project ID"
+                }
+              ]
+            },
+            "description": "Update an existing project (requires admin JWT)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Project (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/projects/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "projects", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Project ID"
+                }
+              ]
+            },
+            "description": "Delete a project (requires admin JWT)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "Get All Services",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/services",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "services"]
+            },
+            "description": "Fetch all services"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Service by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/services/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "services", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Fetch a single service by ID (use manual :id placeholder)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Service (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Custom Design Consultation",
+                  "type": "text"
+                },
+                {
+                  "key": "slug",
+                  "value": "custom-design-consultation",
+                  "type": "text"
+                },
+                {
+                  "key": "desc",
+                  "value": "Professional design consultation for your space",
+                  "type": "text"
+                },
+                {
+                  "key": "desc2",
+                  "value": "Expert advice tailored to your needs and budget",
+                  "type": "text"
+                },
+                {
+                  "key": "features",
+                  "value": "[{\"title\":\"Expert Guidance\",\"desc\":\"Professional consultants with years of experience\"},{\"title\":\"Budget Friendly\",\"desc\":\"Cost-effective solutions for any project\"}]",
+                  "type": "text"
+                },
+                {
+                  "key": "points",
+                  "value": "[\"Personalized Design\",\"Professional Renderings\",\"Implementation Support\",\"Follow-up Service\"]",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/services",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "services"]
+            },
+            "description": "Create a new service (requires admin JWT)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Service (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Updated Service Title",
+                  "type": "text"
+                },
+                {
+                  "key": "desc",
+                  "value": "Updated description",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/services/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "services", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Update a service (requires admin JWT)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Service (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/services/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "services", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Service ID"
+                }
+              ]
+            },
+            "description": "Delete a service (requires admin JWT)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Team",
+      "item": [
+        {
+          "name": "Get All Team Members",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/team",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "team"]
+            },
+            "description": "Fetch all team members"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Team Member by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "http://localhost:5000/api/team/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "team", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Team Member ID"
+                }
+              ]
+            },
+            "description": "Fetch a single team member by ID (use manual :id placeholder)"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Team Member (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Helen Reeves\",\n  \"role\": \"MATERIAL CONSULTANT\",\n  \"image\": \"https://example.com/helen.jpg\",\n  \"bio\": \"Helen Reeves was elected to judge the 3-rd edition of Dezeen Awards. ...\",\n  \"responsibility\": \"Low Voltage Elec.\",\n  \"address\": \"Keas 1169 Str. 15234, Chalandri Athens, Greece\",\n  \"experience\": \"7 Years\",\n  \"email\": \"monda_brothers@outlook.com\",\n  \"phone\": \"123456789\",\n  \"education\": \"Our team brings unparalleled creativity ...\",\n  \"skills\": [\"Quality Assurance And Site Inspections\", \"3D Rendering And Visualization\", \"Lighting Design And Ambiance Creation\", \"Estimation And Budgeting\", \"Space Planning And Layout Optimization\", \"Vendor And Contractor Coordination\", \"Color Theory And Palette Development\", \"Energy-Efficient Design\"],\n  \"professionalSkills\": \"Helen Reeves is a dynamic leader ...\",\n  \"specializedDesignAreas\": 87,\n  \"stylesAndTrends\": 96,\n  \"designPrinciples\": 90,\n  \"social_facebook\": \"https://facebook.com/helen\",\n  \"social_instagram\": \"https://instagram.com/helen\",\n  \"social_linkedin\": \"https://linkedin.com/in/helen\",\n  \"social_twitter\": \"https://twitter.com/helen\",\n  \"social_website\": \"https://helenreeves.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/team",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "team"]
+            },
+            "description": "Create a new team member (requires admin JWT)"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Team Member (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Helen Reeves Updated\",\n  \"role\": \"SENIOR MATERIAL CONSULTANT\",\n  \"bio\": \"Updated bio...\",\n  \"responsibility\": \"Updated responsibility\",\n  \"address\": \"Updated address\",\n  \"experience\": \"8 Years\",\n  \"email\": \"updated_email@outlook.com\",\n  \"phone\": \"987654321\",\n  \"education\": \"Updated education...\",\n  \"skills\": [\"Updated Skill 1\", \"Updated Skill 2\"],\n  \"professionalSkills\": \"Updated professional skills...\",\n  \"specializedDesignAreas\": 90,\n  \"stylesAndTrends\": 98,\n  \"designPrinciples\": 95,\n  \"social_facebook\": \"https://facebook.com/helen-updated\",\n  \"social_instagram\": \"https://instagram.com/helen-updated\",\n  \"social_linkedin\": \"https://linkedin.com/in/helen-updated\",\n  \"social_twitter\": \"https://twitter.com/helen-updated\",\n  \"social_website\": \"https://helenreeves-updated.com\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/team/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "team", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Team Member ID"
+                }
+              ]
+            },
+            "description": "Update a team member (requires admin JWT)"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Team Member (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/team/:id",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "team", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Team Member ID"
+                }
+              ]
+            },
+            "description": "Delete a team member (requires admin JWT)"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Search",
+      "item": [
+        {
+          "name": "Global Search",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/search?q=modern",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "modern",
+                  "description": "Search query (required)"
+                }
+              ]
+            },
+            "description": "Global search across projects, services, team, gallery, and reviews"
+          },
+          "response": []
+        },
+        {
+          "name": "Search by Keyword",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/search?q=luxury",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "search"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "luxury",
+                  "description": "Any keyword to search"
+                }
+              ]
+            },
+            "description": "Search for any keyword across all collections"
+          },
+          "response": []
+        }
+      ],
+      "description": "Global search endpoint for projects, services, team, gallery, and reviews"
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get Overview Stats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/analytics/overview",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "analytics", "overview"]
+            },
+            "description": "Get overview statistics (total projects, services, team members, gallery items, client reviews, contact messages)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Monthly Growth",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/analytics/monthly-growth",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "analytics", "monthly-growth"]
+            },
+            "description": "Get monthly growth data for projects, services, team, gallery, reviews, and contacts"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Project Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/analytics/project-categories",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "analytics", "project-categories"]
+            },
+            "description": "Get project categories distribution data"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Weekly Activity",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/analytics/weekly-activity",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "analytics", "weekly-activity"]
+            },
+            "description": "Get weekly activity data for the last 7 days"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Trends",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{jwt_token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:5000/api/analytics/trends",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "analytics", "trends"]
+            },
+            "description": "Get trends data for analytics dashboard"
+          },
+          "response": []
+        }
+      ],
+      "description": "Analytics endpoints for admin dashboard (requires admin authentication)"
+    },
+    {
+      "name": "Contact",
+      "item": [
+        {
+          "name": "Send Contact Form",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"John Doe\",\n  \"phone\": \"+92 301 6624449\",\n  \"email\": \"john@example.com\",\n  \"subject\": \"Project Inquiry\",\n  \"message\": \"I am interested in your residential design services for my new home project.\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/contact",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "contact"]
+            },
+            "description": "Submit a contact form message (sends email via nodemailer)"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "jwt_token",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    }
+  ]
+}
